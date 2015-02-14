@@ -7,8 +7,15 @@ module Awsword
         end
 
         def do(instance)
-          name_tag = instance.tags.find {|tag| tag.key == 'Name' }
-          system 'ssh', name_tag.value
+          suffix = nil
+          if vpc_config = Config.default.ec2.vpc[instance.vpc.id]
+            suffix = vpc_config.fqdn_suffix
+          end
+
+          fqdn = instance.tags.find {|tag| tag.key == 'Name' }.value
+          fqdn += suffix if suffix
+
+          system 'ssh', fqdn
         end
       end
     end

@@ -1,3 +1,4 @@
+require "awsword/config"
 require "awsword/ec2"
 require "awsword/selector"
 require "awsword/version"
