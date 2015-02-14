@@ -1,26 +1,42 @@
 # Awsword
 
-TODO: Write a gem description
-
 ## Installation
-
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'awsword'
-```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
 
     $ gem install awsword
 
 ## Usage
 
-TODO: Write usage instructions here
+```
+$ awsword ec2
+```
+
+## Configuration
+
+awsword loads configuration located at `~/.awsword.yml`.
+
+```yaml
+default:
+  ec2:
+    vpc:
+      vpc-123456:
+        fqdn_suffix: .your.domain
+```
+
+### Profiles
+
+You can define another configuration:
+
+```yaml
+your_profile:
+  ec2:
+    vpc:
+      vpc-123456:
+        fqdn_suffix: .your.domain
+```
+
+```
+$ awsword ec2 --profile=your_profile
+```
 
 ## Contributing
 
