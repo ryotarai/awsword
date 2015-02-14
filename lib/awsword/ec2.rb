@@ -1,6 +1,7 @@
 require 'aws-sdk'
 
 require 'awsword/ec2/instance_action'
+require 'awsword/ec2/global_action'
 
 module Awsword
   class EC2
@@ -8,6 +9,14 @@ module Awsword
 
     def select
       candidates = {}
+
+      candidates["==== Actions ===="] = :nothing
+
+      GlobalAction.all.each do |action|
+        candidates["(#{action.description})"] = action.new(client)
+      end
+
+      candidates["=== Instances ==="] = :nothing
 
       client.instances.each do |instance|
         name_tag = instance.tags.find {|tag| tag.key == 'Name' }
@@ -18,9 +27,13 @@ module Awsword
 
       selected = Selector.default.select_from(candidates)
 
-      case selected
+      case selected.first
       when Aws::EC2::Instance
-        handle_instance(selected)
+        handle_instances(selected)
+      when GlobalAction::Base
+        selected.first.run
+      when :nothing
+        # pass
       else
         raise UnexpectedError, "#{selected} is unknown."
       end
@@ -28,9 +41,9 @@ module Awsword
 
     private
 
-    def handle_instance(instance)
+    def handle_instances(instances)
       action = select_instance_action
-      action.new.do(instance)
+      action.new(instances).run
     end
 
     def select_instance_action
@@ -39,11 +52,11 @@ module Awsword
         candidates[action.description] = action
       end
 
-      Selector.default.select_from(candidates)
+      Selector.default.select_from(candidates).first
     end
 
     def client
-      Aws::EC2::Resource.new
+      @client ||= Aws::EC2::Resource.new
     end
   end
 end

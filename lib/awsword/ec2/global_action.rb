@@ -1,13 +1,15 @@
+require 'awsword'
+
 module Awsword
   class EC2
-    module InstanceAction
+    module GlobalAction
       class Base
         def self.description
           raise NotImplementedError
         end
 
-        def initialize(instances)
-          @instances = instances
+        def initialize(client)
+          @client = client
         end
 
         def run
@@ -26,6 +28,5 @@ module Awsword
   end
 end
 
-require 'awsword/ec2/instance_action/ssh'
-require 'awsword/ec2/instance_action/edit_tags'
+require 'awsword/ec2/global_action/launch_instance'
 
