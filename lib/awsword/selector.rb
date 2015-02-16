@@ -1,4 +1,5 @@
 require 'open3'
+require 'shellwords'
 
 module Awsword
   class Selector
@@ -12,10 +13,11 @@ module Awsword
       @bin = bin
     end
 
-    def select_from(candidates)
+    def select_from(candidates, options = {})
+      prompt = options[:prompt] || "QUERY>"
       object_ids = nil
 
-      Open3.popen3(@bin) do |stdin, stdout, stderr, wait_thr|
+      Open3.popen3("#{@bin} --prompt #{Shellwords.escape(prompt)}") do |stdin, stdout, stderr, wait_thr|
         candidates.each do |display, value|
           stdin.puts "#{display}\x00#{value.object_id}"
         end

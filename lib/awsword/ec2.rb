@@ -25,7 +25,7 @@ module Awsword
         candidates[name_tag.value] = instance
       end
 
-      selected = Selector.default.select_from(candidates)
+      selected = Selector.default.select_from(candidates, prompt: "Select instances or action>")
 
       case selected.first
       when Aws::EC2::Instance
@@ -52,7 +52,7 @@ module Awsword
         candidates[action.description] = action
       end
 
-      Selector.default.select_from(candidates).first
+      Selector.default.select_from(candidates, prompt: "Select Action>").first
     end
 
     def client
