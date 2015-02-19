@@ -28,4 +28,5 @@ end
 
 require 'awsword/ec2/instance_action/ssh'
 require 'awsword/ec2/instance_action/edit_tags'
+require 'awsword/ec2/instance_action/show_details'
 
