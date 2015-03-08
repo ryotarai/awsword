@@ -21,7 +21,7 @@ module Awsword
         self.constants.map do |const|
           self.const_get(const)
         end.select do |klass|
-          klass.superclass == Base
+          klass.class == Class && klass.superclass == Base
         end
       end
     end
