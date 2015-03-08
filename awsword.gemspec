@@ -8,8 +8,7 @@ Gem::Specification.new do |spec|
   spec.version       = Awsword::VERSION
   spec.authors       = ["Ryota Arai"]
   spec.email         = ["ryota-arai@cookpad.com"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
+  spec.summary       = %q{Sword for AWS}
   spec.homepage      = ""
   spec.license       = "MIT"
 
